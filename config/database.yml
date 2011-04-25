@@ -2,7 +2,7 @@
 #   gem install sqlite3
 development:
   adapter: postgresql
-  database: beer_tweets_dev
+  database: beer_tweets
   username: beer_tweets
   password: beer_tweets
   pool: 25
@@ -19,7 +19,8 @@ test:
 
 production:
   adapter: mysql
-  database: database
+  host: database
+  database: beer_tweets
   username: beer_tweets
   password: beer_tweets
   pool: 100
