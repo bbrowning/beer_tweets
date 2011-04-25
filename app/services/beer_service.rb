@@ -21,7 +21,7 @@ class BeerService
     EventMachine::run {
       begin
       @stream = Twitter::JSONStream.connect(:path => '/1/statuses/filter.json',
-                                            :auth => '#{@username}:#{@password}',
+                                            :auth => "#{@username}:#{@password}",
                                             :method => 'POST',
                                             :content => 'track=beer'
                                             )
