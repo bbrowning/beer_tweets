@@ -8,6 +8,7 @@ gem "shoulda-matchers", :group => [:development, :test]
 # JRuby
 gem "activerecord-jdbc-adapter", :require => "arjdbc"
 gem "jdbc-postgres"
+gem "jdbc-mysql"
 gem "jdbc-sqlite3"
 gem "jruby-openssl"
 
