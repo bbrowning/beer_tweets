@@ -1,0 +1,14 @@
+%h1
+  What Kind of Beers are People Tweeting About?
+
+%h3 Search For a Kind
+.form
+  = form_tag(root_path) do
+    = text_field_tag("kind")
+
+.ideas
+  %h3 Most Popular Kinds
+  %ul
+    - @kinds.each do |kind|
+      %li
+        = link_to(kind, beer_kind_path(kind))
