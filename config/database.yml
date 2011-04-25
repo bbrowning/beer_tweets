@@ -21,7 +21,7 @@ production:
   adapter: mysql
   host: database
   database: beer_tweets
-  username: beer_tweets
-  password: beer_tweets
+  username: beertweets
+  password: beertweets
   pool: 100
   timeout: 5000
