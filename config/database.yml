@@ -23,5 +23,5 @@ production:
   database: beer_tweets
   username: beertweets
   password: beertweets
-  pool: 100
+  pool: 500
   timeout: 5000
