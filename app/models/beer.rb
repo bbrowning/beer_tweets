@@ -17,7 +17,7 @@ class Beer < ActiveRecord::Base
     max_offset = options[:max_offset] || 2
     limit = options[:limit] || 25
     cache_key = "Beer.top_kinds_#{max_offset}_#{limit}"
-    Rails.cache.fetch(cache_key, :expires_in => 30.seconds) do
+    Rails.cache.fetch(cache_key, :expires_in => 30.seconds, :race_condition_ttl => 5.seconds) do
       Kind.top_by_keyword(KEYWORDS, max_offset, limit).map { |kind, count| kind }
     end
   end
@@ -26,7 +26,7 @@ class Beer < ActiveRecord::Base
     max_offset = options[:max_offset] || 2
     limit = options[:limit] || 25
     cache_key = "Beer.find_by_kind_#{kind}_#{max_offset}_#{limit}"
-    Rails.cache.fetch(cache_key, :expires_in => 10.seconds) do
+    Rails.cache.fetch(cache_key, :expires_in => 10.seconds, :race_condition_ttl => 5.seconds) do
       kinds = Kind.includes(:beer).
         where(:keyword => KEYWORDS, :offset => (1..max_offset), :word => kind).
         order('beers.tweeted_at DESC').limit(limit)
