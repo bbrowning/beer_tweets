@@ -1,13 +1,9 @@
 class BeersController < ApplicationController
 
-  def root
-    redirect_to beer_kind_path(params[:kind]) and return if request.post?
-    @kinds = Beer.top_kinds(:limit => 25)
-  end
+  caches_action :most_popular, :expires_in => 30.seconds
 
-  def kind
-    @kind = params[:kind]
-    @beers = Beer.find_by_kind(@kind, :limit => 10)
+  def most_popular
+    @popular_beers = Beer.most_popular(:limit => 25)
   end
 
 end

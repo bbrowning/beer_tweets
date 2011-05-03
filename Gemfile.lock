@@ -127,5 +127,4 @@ DEPENDENCIES
   rspec-rails (>= 2.5.0)
   shoulda-matchers
   torquebox
-  torquebox-rake-support
   twitter-stream

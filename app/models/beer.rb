@@ -1,42 +1,35 @@
 class Beer < ActiveRecord::Base
   has_many :kinds
 
+  class << self; include TorqueBox::Messaging::Backgroundable; end
+
   KEYWORDS = ['beer', 'beers']
 
-  def self.from_json(text)
+  def self.create_from_json(text)
     json = ActiveSupport::JSON.decode(text)
-    Beer.new(:text => json["text"],
-             :twitter_id => json["id_str"],
-             :tweeted_at => Time.parse(json["created_at"]),
-             :user_id => json["user"]["id_str"],
-             :screen_name => json["user"]["screen_name"],
-             :profile_image_url => json["user"]["profile_image_url"])
+    beer = Beer.new(:text => json["text"],
+                    :twitter_id => json["id_str"],
+                    :tweeted_at => Time.parse(json["created_at"]),
+                    :user_id => json["user"]["id_str"],
+                    :screen_name => json["user"]["screen_name"],
+                    :profile_image_url => json["user"]["profile_image_url"])
+    beer.save!
+    beer.index!
   end
 
-  def self.top_kinds(options={})
+  def self.most_popular(options={})
     max_offset = options[:max_offset] || 2
     limit = options[:limit] || 25
-    cache_key = "Beer.top_kinds_#{max_offset}_#{limit}"
-    Rails.cache.fetch(cache_key, :expires_in => 30.seconds, :race_condition_ttl => 5.seconds) do
-      Kind.top_by_keyword(KEYWORDS, max_offset, limit).map { |kind, count| kind }
-    end
-  end
-
-  def self.find_by_kind(kind, options={})
-    max_offset = options[:max_offset] || 2
-    limit = options[:limit] || 25
-    cache_key = "Beer.find_by_kind_#{kind}_#{max_offset}_#{limit}"
-    Rails.cache.fetch(cache_key, :expires_in => 10.seconds, :race_condition_ttl => 5.seconds) do
-      kinds = Kind.includes(:beer).
-        where(:keyword => KEYWORDS, :offset => (1..max_offset), :word => kind).
-        order('beers.tweeted_at DESC').limit(limit)
-      kinds.map { |k| k.beer }
-    end
+    Kind.top_by_keyword(KEYWORDS, max_offset, limit).map { |kind, count| kind }
   end
 
   def index!
     # Create Kinds up to 3 offset aways
     kinds.create(words_before(text, KEYWORDS, 3))
+  end
+
+  def self.clean_older_than(amount)
+    Beer.where('created_at < ?', amount.ago).delete_all
   end
 
   protected

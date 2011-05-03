@@ -13,7 +13,6 @@ gem "jdbc-sqlite3"
 gem "jruby-openssl"
 
 # TorqueBox
-gem "torquebox-rake-support"
 gem "torquebox"
 
 gem "eventmachine"
