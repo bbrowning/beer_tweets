@@ -1,3 +1,5 @@
+require 'streaming_twitter'
+
 class BeerService
 
   def initialize(options)
