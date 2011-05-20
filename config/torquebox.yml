@@ -1,5 +1,5 @@
 services:
-  beer_service:
+  BeerService:
     username: change_me
     password: change_me_too
 jobs:
