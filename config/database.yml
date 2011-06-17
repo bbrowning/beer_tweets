@@ -1,11 +1,9 @@
 # SQLite version 3.x
 #   gem install sqlite3
 development:
-  adapter: postgresql
-  database: beer_tweets
-  username: beer_tweets
-  password: beer_tweets
-  pool: 25
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
   timeout: 5000
 
 # Warning: The database defined as "test" will be erased and
@@ -18,10 +16,9 @@ test:
   timeout: 5000
 
 production:
-  adapter: mysql
-  host: database
+  adapter: postgresql
   database: beer_tweets
-  username: beertweets
-  password: beertweets
-  pool: 500
+  username: beer_tweets
+  password: beer_tweets
+  pool: 100
   timeout: 5000
